@@ -56,15 +56,19 @@ io.on('connection', function(socket){
 			return;
 		}
 		var ops=[
-			'-vcodec', socket._vcodec,'-i','-',
-			'-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'zerolatency',
-			'-an', //TODO: give up audio for now...
+			'-i', '-',
+			'-c:v', 'libx264', '-preset', 'fast', //'-tune', 'zerolatency',
+			// '-an', //TODO: give up audio for now...
 			//'-async', '1', 
 			//'-filter_complex', 'aresample=44100', //necessary for trunked streaming?
-			//'-strict', 'experimental', '-c:a', 'aac', '-b:a', '128k',
-			'-bufsize', '1000',
+			'-c:a', 'aac', '-b:a', '128k',
+			// '-bufsize', '6000',
 			'-f', 'flv', socket._rtmpDestination
 		];
+// 14:43 不佳 視訊設定有誤
+// 請將主影格頻率設為 4 秒或小於 4 秒。目前的主影格傳送頻率 (9.8 秒) 過低，因此可能造成緩衝處理的情況。請留意，如果發生內容擷取錯誤，可能會導致 GOP (影格組) 大小錯誤。
+// 請檢查影片解析度。目前的解析度為 (640 X 480)，但這不是最佳解析度。
+// 這個音訊串流的目前位元率 (71.00 Kbps) 低於建議值。請考慮將音訊串流的位元率改成 128 Kbps。
 		ffmpeg_process=spawn('ffmpeg', ops);
 		feedStream=function(data){
 			ffmpeg_process.stdin.write(data);

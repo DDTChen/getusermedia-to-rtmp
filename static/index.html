@@ -9,11 +9,11 @@
 MediaRecorder to RTMP Demo
 </h1>
 <label for="option_width" >Size:</label>
-<input type="text" id="option_width" value="480"/> &times;
-<input type="text" id="option_height" value="360"/>
+<input type="text" id="option_width" value="1280"/> &times;
+<input type="text" id="option_height" value="720"/>
 <br>
 <label for="option_url" >RTMP Destination:</label>
-<input type="text" id="option_url" value="rtmp://localhost/live"/>
+<input type="text" id="option_url" size="70" value="rtmp://localhost/live"/>
 <br>
 <button id="button_start">Start streaming</button>
 <hr/>
@@ -36,7 +36,8 @@ var output_console=document.getElementById('output_console'),
 	button_start=document.getElementById('button_start'),
 	height=option_height.value,
 	width=option_width.value,
-	url=option_url.value='rtmp://'+location.host.split(':')[0]+':1935/live';
+	// url=option_url.value='rtmp://'+location.host.split(':')[0]+':1935/live';
+	url=option_url.value='';
 
 option_height.onchange=option_height.onkeyup=function(){height=1*this.value;}
 option_width.onchange=option_width.onkeyup=function(){width=1*this.value;}
@@ -110,8 +111,8 @@ function onError(err) {
 function requestMedia(){
 	var constraints = { audio: true, 
 		video:{
-	        width: { min: width, ideal: width, max: width },
-	        height: { min: height, ideal: height, max: height },
+	        width: { min: width, ideal: width },
+	        height: { min: height, ideal: height},
 	    }
 	};
 	navigator.getUserMedia(constraints, onSuccess, onError);
